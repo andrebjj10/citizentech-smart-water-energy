@@ -1,0 +1,12 @@
+import React from 'react';
+import {NavigationContainer,DarkTheme} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {Ionicons} from '@expo/vector-icons';
+import {StatusBar} from 'expo-status-bar';
+import DashboardScreen from './src/screens/DashboardScreen';
+import ActuatorsScreen from './src/screens/ActuatorsScreen';
+import FaultsScreen from './src/screens/FaultsScreen';
+import {colors} from './src/theme/colors';
+const Tab=createBottomTabNavigator();
+const theme={...DarkTheme,colors:{...DarkTheme.colors,background:colors.bg,card:colors.surface,text:colors.text,border:colors.border,primary:colors.accent}};
+export default function App(){return <NavigationContainer theme={theme}><StatusBar style="light"/><Tab.Navigator screenOptions={({route})=>({headerShown:false,tabBarActiveTintColor:colors.accent,tabBarInactiveTintColor:colors.muted,tabBarStyle:{backgroundColor:colors.surface,borderTopColor:colors.border,height:68,paddingBottom:10},tabBarIcon:({color,size})=><Ionicons name={route.name==='Painel'?'speedometer-outline':route.name==='Atuadores'?'options-outline':'warning-outline'} size={size} color={color}/>})}><Tab.Screen name="Painel" component={DashboardScreen}/><Tab.Screen name="Atuadores" component={ActuatorsScreen}/><Tab.Screen name="Alertas" component={FaultsScreen}/></Tab.Navigator></NavigationContainer>};

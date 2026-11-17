@@ -1,0 +1,8 @@
+**/node_modules/
+**/.expo/
+**/target/
+**/data/
+**/.idea/
+*.mv.db
+*.trace.db
+.env
