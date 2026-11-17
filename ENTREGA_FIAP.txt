@@ -2,4 +2,4 @@ Global Solution 2026.2 — Engenharia Mecatrônica 2EMR
 Disciplinas: Advanced Programming and Mobile Development / Técnicas Avançadas de Programação
 Nome: André Henrique Mendes da Cunha
 RM: 564602
-Repositório GitHub: COLE_AQUI_URL_DO_REPOSITORIO
+Repositório GitHub: https://github.com/andrebjj10/citizentech-smart-water-energy
