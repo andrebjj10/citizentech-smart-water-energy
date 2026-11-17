@@ -1,1 +1,1 @@
-{"expo":{"name":"CitizenTech Station","slug":"citizentech-station","scheme":"citizentech","version":"1.0.0","orientation":"portrait","userInterfaceStyle":"dark","android":{"package":"br.com.fiap.citizentech"},"ios":{"supportsTablet":true},"plugins":["react-native-screens"]}}
+{"expo":{"name":"CitizenTech Station","slug":"citizentech-station","scheme":"citizentech","version":"1.0.0","orientation":"portrait","userInterfaceStyle":"dark","android":{"package":"br.com.fiap.citizentech"},"ios":{"supportsTablet":true}}}
