@@ -2,6 +2,8 @@
 
 Data: 16/11/2026 (horário de São Paulo).
 
+Documento histórico do início da sessão. Correções e evidências posteriores estão no [relatório de testes](RELATORIO_TESTES.md).
+
 Escopo: arquivos da pasta `citizentech-programacao`, comparados com os requisitos transcritos pelo André na conversa. O enunciado original da FIAP não foi localizado nesta pasta; critérios adicionais do documento original precisam ser conferidos quando estiver disponível.
 
 ## Situação por requisito

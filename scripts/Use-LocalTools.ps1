@@ -8,3 +8,4 @@ if ($localJava) {
 $localNode = Get-ChildItem (Join-Path $projectRoot '.tools') -Directory -Filter 'node-v24*-win-x64' -ErrorAction SilentlyContinue | Select-Object -First 1
 if ($localNode) { $env:Path = $localNode.FullName + ';' + $env:Path }
 $env:npm_config_cache = Join-Path $projectRoot '.cache/npm'
+$env:MAVEN_USER_HOME = Join-Path $projectRoot '.cache/maven-user'

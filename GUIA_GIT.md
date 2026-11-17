@@ -1,48 +1,91 @@
-# Guia prático de Git e GitHub — André (RM 564602)
+# Git e GitHub no VS Code
 
-## Criar o repositório no GitHub
+Git mantém versões locais. GitHub hospeda o repositório remoto. Um commit não envia arquivos à internet; `push` faz esse envio.
 
-1. Abra https://github.com/new e crie um repositório chamado `citizentech-smart-water-energy`.
-2. Deixe desmarcada a criação automática de README e `.gitignore`, porque esses arquivos já estão no projeto.
-3. Abra a pasta **citizentech-programacao** no VS Code (`Arquivo > Abrir Pasta`).
-4. Abra `Terminal > Novo Terminal` e execute:
+## O que já foi registrado
+
+O repositório local está na pasta `citizentech-programacao`, na branch `main`. Não execute `git init` novamente nesta cópia.
+
+Primeiros commits reais desta sessão:
+
+- `603e2fb`: base recebida e auditoria inicial.
+- `47dd0c8`: Maven Wrapper e correções de configuração/dependências do Expo 54.
+- `a2007a6`: serviço transacional, validações, testes e persistência H2.
+
+Commits seguintes registram a atualização para o SDK 58, o cliente mobile, a simulação, os testes e a documentação conforme forem concluídos. A base veio pronta de um ZIP; não foi apresentada como implementação feita nesta sessão.
+
+No terminal integrado do VS Code:
 
 ```powershell
-git init
-git branch -M main
-git config user.name "André Henrique Mendes da Cunha"
-git config user.email "SEU_EMAIL_DO_GITHUB"
-git add .gitignore README.md GUIA_GIT.md
-git commit -m "docs: documentação inicial e plano do projeto"
-git add backend
-git commit -m "feat: API Spring Boot e persistência de dados H2"
-git add mobile
-git commit -m "feat: painel mobile React Native integrado à API"
-git add ENTREGA_FIAP.txt
-git commit -m "docs: preparar arquivo de entrega FIAP"
+git status
+git log --oneline --decorate -10
+git diff
+```
+
+- `status`: arquivos alterados e quais já foram selecionados.
+- `log`: histórico.
+- `diff`: mudanças ainda não selecionadas.
+
+A identidade já configurada foi usada nos commits. Para conferir: `git config user.name` e `git config user.email`. Se precisar corrigir a identidade dos próximos commits, use configuração **local** neste repositório, sem `--global`. Não reescreva commits anteriores sem entender o efeito.
+
+## Registrar uma próxima alteração real
+
+Implemente, execute as verificações relevantes e revise a diferença. Selecione apenas os arquivos dessa alteração:
+
+```powershell
+git add CAMINHO_DO_ARQUIVO
+git diff --cached
+git commit -m "fix: descreva a correcao realizada"
+git status
+```
+
+`add` prepara o conteúdo para o próximo commit; `commit` salva essa seleção no histórico. Não copie a mensagem de exemplo literalmente: descreva o que foi feito. Não afirme que um teste passou sem executá-lo.
+
+No VS Code, a aba **Controle do Código-Fonte** permite ver as diferenças, selecionar arquivos com **+**, escrever a mensagem e criar o commit. Evite “Commit de tudo” sem revisar a lista.
+
+## Criar o repositório GitHub
+
+Esta etapa ainda não foi executada.
+
+1. Acesse https://github.com/new com sua conta.
+2. Sugestão de nome: `citizentech-smart-water-energy`.
+3. Escolha a visibilidade conforme as regras da FIAP. Se privado, o professor precisa ter acesso.
+4. Não inicialize README, licença ou .gitignore no GitHub: já existe um histórico local.
+5. Crie o repositório vazio e copie sua URL HTTPS.
+
+Antes do envio, revise:
+
+```powershell
+git status
+git ls-files
+git remote -v
+```
+
+Não devem aparecer banco H2, `node_modules`, ferramentas, caches, logs, `.env` ou binários. `.env.example`, `package-lock.json` e Maven Wrapper devem ser versionados.
+
+## Conectar e enviar
+
+Depois de criar o repositório vazio, substitua a URL de exemplo pela URL copiada:
+
+```powershell
 git remote add origin https://github.com/SEU_USUARIO/citizentech-smart-water-energy.git
 git push -u origin main
 ```
 
-> Atenção: substitua `SEU_EMAIL_DO_GITHUB` e `SEU_USUARIO` pelos seus dados. Configure autenticação do GitHub no VS Code ou via navegador. Esses commits refletem a organização dos arquivos fornecidos; **não são evidência de desenvolvimento em datas diferentes nem devem ser apresentados como tal**. Faça novos commits quando modificar, testar e corrigir o projeto de verdade.
+`remote add` salva o endereço remoto localmente. `push` publica os commits e os arquivos rastreados. Se `origin` já existir, confira `git remote -v` antes de alterar qualquer coisa; não repita o comando automaticamente.
 
-## Commits adicionais após testar
+Faça o login solicitado pelo Git Credential Manager/navegador diretamente. Não use senha ou token na URL, no código ou no chat.
 
-Após o app funcionar, crie alterações reais (exemplo: configuração do endereço local, correções, novas telas ou testes). Então execute:
+Depois, confira no GitHub README, pastas, histórico e acesso do professor. Atualize `ENTREGA_FIAP.txt` com a URL real, crie um commit dessa alteração e envie:
 
 ```powershell
-git status
-git add .
-git commit -m "test: validar integração e tratamento de API offline"
+git add ENTREGA_FIAP.txt
+git commit -m "docs: registrar repositorio de entrega"
 git push
 ```
 
-Na aba **Controle do Código-Fonte** do VS Code é possível selecionar arquivos para stage clicando no `+`, escrever a mensagem do commit e clicar em **Commit**, depois **Sincronizar Alterações**.
+## Cuidados com o histórico
 
-## O que NÃO publicar
+Não use datas falsas, `--amend`, rebase, `reset --hard` ou `push --force` para fabricar uma evolução. Faça commits novos para correções novas. Vários commits no mesmo dia são válidos quando refletem etapas realmente realizadas.
 
-A pasta `backend/data/` contém banco local e é ignorada. `node_modules`, `target` e `.expo` também são ignorados. Confira `git status` antes de fazer push.
-
-## Arquivo de entrega
-
-Abra `ENTREGA_FIAP.txt`, substitua `COLE_AQUI_URL_DO_REPOSITORIO` pela URL do repositório e envie **esse TXT** no portal FIAP. O repositório é o entregável técnico.
+O envio ao GitHub e a entrega no portal continuam pendentes até serem efetivamente feitos e conferidos.
