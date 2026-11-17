@@ -6,6 +6,8 @@ Git mantém versões locais. GitHub hospeda o repositório remoto. Um commit nã
 
 O repositório local está na pasta `citizentech-programacao`, na branch `main`. Não execute `git init` novamente nesta cópia.
 
+O remoto `origin` já está configurado como `https://github.com/andrebjj10/citizentech-smart-water-energy.git`, e o primeiro push foi concluído. A branch local acompanha `origin/main`. Nesta cópia, use novos commits e `git push` para enviar alterações; não repita a criação do remoto.
+
 Primeiros commits reais desta sessão:
 
 - `603e2fb`: base recebida e auditoria inicial.
@@ -45,7 +47,7 @@ No VS Code, a aba **Controle do Código-Fonte** permite ver as diferenças, sele
 
 ## Criar o repositório GitHub
 
-Esta etapa ainda não foi executada.
+O repositório deste projeto já foi criado e recebeu os commits. As instruções abaixo servem de referência para criar um outro repositório vazio.
 
 1. Acesse https://github.com/new com sua conta.
 2. Sugestão de nome: `citizentech-smart-water-energy`.
@@ -88,4 +90,4 @@ git push
 
 Não use datas falsas, `--amend`, rebase, `reset --hard` ou `push --force` para fabricar uma evolução. Faça commits novos para correções novas. Vários commits no mesmo dia são válidos quando refletem etapas realmente realizadas.
 
-O envio ao GitHub e a entrega no portal continuam pendentes até serem efetivamente feitos e conferidos.
+O envio deste projeto ao GitHub já foi concluído, e o TXT de entrega foi preenchido. A entrega no portal FIAP continua pendente até ser efetivamente enviada e conferida.

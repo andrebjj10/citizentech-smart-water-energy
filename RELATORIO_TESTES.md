@@ -19,7 +19,7 @@ Data: 16/11/2026, horário de São Paulo. Este documento descreve evidências de
 | Indisponibilidade na interface | André confirmou com a API desligada: mensagem de conexão exibida, últimos dados mantidos e navegação sem travar |
 | Recuperação na interface | André confirmou que, após religar a API, o painel recuperou a conexão e os controles normalmente |
 | Acesso do iPhone à API | Não concluído: Safari ficou carregando sem abrir a página de saúde |
-| Publicação GitHub | Ainda não realizada |
+| Publicação GitHub | Primeiro push concluído: branch main em https://github.com/andrebjj10/citizentech-smart-water-energy; TXT preenchido com a URL |
 
 ## Cobertura do backend
 
@@ -40,7 +40,7 @@ Os testes unitários/de integração Spring usam H2 em memória isolado. A prova
 
 `npm audit` reportou 3 avisos moderados relacionados à dependência transitiva `minimatch`, propagados por `@expo/fingerprint` e `expo`; nenhum aviso alto ou crítico nessa consulta. O npm sugeriu um downgrade para Expo 52, incompatível com o SDK 58 do iPhone. Não foi aplicado `npm audit fix --force`. A correção compatível dessa cadeia continua pendente de avaliação/atualização das dependências.
 
-Os testes manuais de painel, alerta crítico, atuadores, indisponibilidade e recuperação da interface web foram confirmados pelo André. Ainda faltam execução em dispositivo nativo, conferência do enunciado original e publicação do repositório/URL no TXT de entrega.
+Os testes manuais de painel, alerta crítico, atuadores, indisponibilidade e recuperação da interface web foram confirmados pelo André. O repositório foi publicado e o TXT contém a URL. Ainda faltam execução em dispositivo nativo, conferência do enunciado original e envio da entrega ao portal FIAP.
 
 ## Como repetir
 

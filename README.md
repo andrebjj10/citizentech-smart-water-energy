@@ -11,7 +11,7 @@ Aplicativo React Native/Expo integrado a uma API Java/Spring Boot. Monitora águ
 
 Backend: **20 testes aprovados**, JAR gerado e persistência em arquivo comprovada entre dois processos. Cliente mobile/simulador: **12 testes aprovados**. Integração HTTP real e bundles iOS/web aprovados. André confirmou que a interface web carrega dados da API.
 
-**Execução nativa no iPhone e publicação no GitHub ainda pendentes.** Consulte [o relatório de testes](RELATORIO_TESTES.md) para evidências, limitações e avisos de dependências. A [auditoria inicial](AUDITORIA_INICIAL.md) registra a situação anterior às correções.
+**Execução nativa no iPhone ainda pendente.** O projeto foi publicado no [GitHub](https://github.com/andrebjj10/citizentech-smart-water-energy). Consulte [o relatório de testes](RELATORIO_TESTES.md) para evidências, limitações e avisos de dependências. A [auditoria inicial](AUDITORIA_INICIAL.md) registra a situação anterior às correções.
 
 ## Organização
 
@@ -127,4 +127,4 @@ Os atuadores têm estados persistentes e são simulados. Não há sensores físi
 
 ## Entrega
 
-Siga o [guia Git](GUIA_GIT.md), publique o repositório depois da revisão e preencha a URL real em `ENTREGA_FIAP.txt`. Confira formato e critérios no enunciado/portal. Preserve os commits das etapas reais e registre apenas testes efetivamente executados.
+O [repositório GitHub](https://github.com/andrebjj10/citizentech-smart-water-energy) foi publicado com o histórico real de desenvolvimento, e `ENTREGA_FIAP.txt` contém a URL. O envio ao portal FIAP ainda não foi realizado. Confira formato e critérios no enunciado/portal. O [guia Git](GUIA_GIT.md) explica como registrar e enviar alterações futuras.
