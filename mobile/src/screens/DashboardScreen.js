@@ -1,23 +1,58 @@
-import React,{useEffect,useState,useCallback} from 'react';
-import {View,Text,ScrollView,RefreshControl,StyleSheet,TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, ScrollView, RefreshControl, StyleSheet, Pressable, ActivityIndicator} from 'react-native';
 import {api} from '../services/api';
+import {scenarios, simulateReading} from '../services/simulation';
+import useStationResource from '../hooks/useStationResource';
 import MetricCard from '../components/MetricCard';
 import OfflineBanner from '../components/OfflineBanner';
 import {colors} from '../theme/colors';
-export default function DashboardScreen(){
- const [reading,setReading]=useState(null); const [offline,setOffline]=useState(''); const [loading,setLoading]=useState(false);
- const refresh=useCallback(async()=>{setLoading(true);try{const data=await api.latest();setReading(data);setOffline('');}catch(e){setOffline(e.message||'Não foi possível acessar a estação.');}finally{setLoading(false)}},[]);
- useEffect(()=>{refresh();const id=setInterval(refresh,10000);return()=>clearInterval(id)},[refresh]);
- const simulate=async()=>{try{setLoading(true);await api.saveReading({waterLevel:+(45+Math.random()*50).toFixed(1),flowRate:+(8+Math.random()*25).toFixed(1),powerWatts:Math.round(500+Math.random()*900),energyKwh:+(10+Math.random()*10).toFixed(2)});await refresh();}catch(e){setOffline(e.message||'Falha na simulação');}finally{setLoading(false)}};
- return <ScrollView style={s.root} contentContainerStyle={s.content} refreshControl={<RefreshControl refreshing={loading} onRefresh={refresh} tintColor={colors.accent}/> }>
-  <Text style={s.eyebrow}>CITIZENTECH · ESTAÇÃO 01</Text><Text style={s.title}>Visão geral</Text><Text style={s.intro}>Monitoramento em tempo real da estação de água e energia.</Text>
-  <OfflineBanner message={offline}/><View style={s.status}><View style={[s.dot,{backgroundColor:offline?colors.danger:colors.accent}]}/><Text style={s.statusText}>{offline?'Desconectado':'API conectada'} · {reading?.recordedAt?new Date(reading.recordedAt).toLocaleString('pt-BR'):'Aguardando leitura'}</Text></View>
-  <MetricCard label="NÍVEL DO RESERVATÓRIO" value={reading?reading.waterLevel.toFixed(1):'--'} unit="%" subtitle="Capacidade total de 50 litros" accent={colors.blue}/>
-  <MetricCard label="VAZÃO HIDRÁULICA" value={reading?reading.flowRate.toFixed(1):'--'} unit="L/min" subtitle="Fluxo instantâneo medido"/>
-  <MetricCard label="POTÊNCIA ELÉTRICA" value={reading?reading.powerWatts.toFixed(0):'--'} unit="W" subtitle="Consumo elétrico simulado" accent={colors.warning}/>
-  <MetricCard label="ENERGIA ACUMULADA" value={reading?reading.energyKwh.toFixed(2):'--'} unit="kWh" subtitle="Indicador de energia acumulada"/>
-  <TouchableOpacity disabled={!!offline||loading} style={[s.btn,(offline||loading)&&s.disabled]} onPress={simulate}><Text style={s.btnText}>Gerar nova leitura simulada</Text></TouchableOpacity>
-  <Text style={s.note}>Simulação acadêmica: não há sensores físicos conectados.</Text>
- </ScrollView>
+
+export default function DashboardScreen() {
+  const {data: reading, error, loading, saving, refresh, mutate} = useStationResource(api.latest, null);
+  const [scenario, setScenario] = useState('normal');
+  const disabled = !!error || !reading || loading || saving;
+  const status = error ? 'Atualização indisponível' : reading ? 'API conectada' : 'Conectando à estação';
+
+  return <ScrollView style={s.root} contentContainerStyle={s.content}
+    refreshControl={<RefreshControl refreshing={loading} onRefresh={refresh} tintColor={colors.accent}/>}>
+    <Text style={s.eyebrow}>CITIZENTECH · ESTAÇÃO 01</Text>
+    <Text style={s.title}>Visão geral</Text>
+    <Text style={s.intro}>Água e energia sob controle. Dados simulados da estação, atualizados a cada 10 segundos.</Text>
+    <OfflineBanner error={error} hasData={!!reading} onRetry={refresh}/>
+    <View style={s.status}>
+      <View style={[s.dot, {backgroundColor: error ? colors.danger : reading ? colors.accent : colors.warning}]}/>
+      <Text style={s.statusText}>{status}{reading ? ' · ' + new Date(reading.recordedAt).toLocaleString('pt-BR') : ''}</Text>
+    </View>
+    {!reading && loading && <ActivityIndicator color={colors.accent} style={{marginBottom: 16}}/>}
+    <MetricCard label="NÍVEL DO RESERVATÓRIO" value={reading ? reading.waterLevel.toFixed(1) : '--'} unit="%" subtitle="Capacidade simulada de 50 litros" accent={colors.blue}/>
+    <MetricCard label="VAZÃO HIDRÁULICA" value={reading ? reading.flowRate.toFixed(1) : '--'} unit="L/min" subtitle="Alerta acima de 35 L/min"/>
+    <MetricCard label="POTÊNCIA ELÉTRICA" value={reading ? reading.powerWatts.toFixed(0) : '--'} unit="W" subtitle="Alerta acima de 1800 W" accent={colors.warning}/>
+    <MetricCard label="ENERGIA ACUMULADA" value={reading ? reading.energyKwh.toFixed(4) : '--'} unit="kWh" subtitle="Total acumulado na simulação"/>
+    <Text style={s.section}>Simular um cenário</Text>
+    <View style={s.scenarios}>{scenarios.map(item => <Pressable key={item.id} onPress={() => setScenario(item.id)}
+      accessibilityRole="button" accessibilityState={{selected: scenario === item.id}}
+      style={[s.chip, scenario === item.id && s.selected]}>
+      <Text style={{color: scenario === item.id ? colors.accent : colors.muted}}>{item.label}</Text>
+    </Pressable>)}</View>
+    <Pressable disabled={disabled} accessibilityRole="button" accessibilityState={{disabled}}
+      style={[s.btn, disabled && s.disabled]} onPress={() => mutate(previous => api.saveReading(simulateReading(previous, scenario)))}>
+      <Text style={s.btnText}>{saving ? 'Registrando leitura...' : 'Gerar nova leitura simulada'}</Text>
+    </Pressable>
+    <Text style={s.note}>Cada leitura acrescenta 10 segundos simulados de consumo. Consulte os eventos gerados na aba Alertas.</Text>
+  </ScrollView>;
 }
-const s=StyleSheet.create({root:{flex:1,backgroundColor:colors.bg},content:{padding:20,paddingBottom:45},eyebrow:{color:colors.accent,fontWeight:'700',fontSize:11,letterSpacing:2,marginTop:12},title:{color:colors.text,fontSize:32,fontWeight:'800',marginTop:7},intro:{color:colors.muted,marginTop:7,marginBottom:18,lineHeight:21},status:{flexDirection:'row',alignItems:'center',marginBottom:14},dot:{width:8,height:8,borderRadius:10,marginRight:8},statusText:{color:colors.muted,fontSize:12,flex:1},btn:{backgroundColor:colors.accent,borderRadius:14,padding:16,alignItems:'center',marginTop:5},btnText:{color:'#082129',fontWeight:'800'},disabled:{opacity:.4},note:{color:colors.muted,fontSize:11,textAlign:'center',marginTop:12}});
+const s = StyleSheet.create({
+  root: {flex: 1, backgroundColor: colors.bg}, content: {padding: 20, paddingBottom: 40},
+  eyebrow: {color: colors.accent, fontWeight: '700', fontSize: 11, letterSpacing: 2, marginTop: 12},
+  title: {color: colors.text, fontSize: 32, fontWeight: '800', marginTop: 7},
+  intro: {color: colors.muted, marginTop: 7, marginBottom: 18, lineHeight: 21},
+  status: {flexDirection: 'row', alignItems: 'center', marginBottom: 14},
+  dot: {width: 8, height: 8, borderRadius: 10, marginRight: 8}, statusText: {color: colors.muted, fontSize: 12, flex: 1},
+  section: {color: colors.text, fontWeight: '700', marginVertical: 12},
+  scenarios: {flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 12},
+  chip: {padding: 12, borderWidth: 1, borderColor: colors.border, borderRadius: 12},
+  selected: {borderColor: colors.accent, backgroundColor: colors.surface},
+  btn: {backgroundColor: colors.accent, borderRadius: 14, padding: 16, alignItems: 'center', marginTop: 5},
+  btnText: {color: '#082129', fontWeight: '800'}, disabled: {opacity: 0.4},
+  note: {color: colors.muted, fontSize: 11, textAlign: 'center', marginTop: 12, lineHeight: 18},
+});
