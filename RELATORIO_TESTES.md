@@ -14,6 +14,10 @@ Data: 16/11/2026, horário de São Paulo. Este documento descreve evidências de
 | Exportação iOS com SDK 58 | Bundle gerado com sucesso; isso não equivale a executar no iPhone |
 | Exportação web com SDK 58 | Bundle gerado com sucesso |
 | Interface web | André confirmou no navegador: painel abriu e carregou dados da API |
+| Alerta crítico pela interface | André confirmou: gerou leitura no cenário Nível crítico e o evento apareceu na aba Alertas |
+| Atuadores pela interface | André confirmou: alterou um switch, saiu da aba e voltou; o estado escolhido foi mantido |
+| Indisponibilidade na interface | André confirmou com a API desligada: mensagem de conexão exibida, últimos dados mantidos e navegação sem travar |
+| Recuperação na interface | André confirmou que, após religar a API, o painel recuperou a conexão e os controles normalmente |
 | Acesso do iPhone à API | Não concluído: Safari ficou carregando sem abrir a página de saúde |
 | Publicação GitHub | Ainda não realizada |
 
@@ -36,7 +40,7 @@ Os testes unitários/de integração Spring usam H2 em memória isolado. A prova
 
 `npm audit` reportou 3 avisos moderados relacionados à dependência transitiva `minimatch`, propagados por `@expo/fingerprint` e `expo`; nenhum aviso alto ou crítico nessa consulta. O npm sugeriu um downgrade para Expo 52, incompatível com o SDK 58 do iPhone. Não foi aplicado `npm audit fix --force`. A correção compatível dessa cadeia continua pendente de avaliação/atualização das dependências.
 
-Ainda precisam ser confirmados na interface: alerta crítico criado pelo botão, switches, indisponibilidade e recuperação sem recarregar a página. Também faltam execução em dispositivo nativo, conferência do enunciado original e publicação do repositório/URL no TXT de entrega.
+Os testes manuais de painel, alerta crítico, atuadores, indisponibilidade e recuperação da interface web foram confirmados pelo André. Ainda faltam execução em dispositivo nativo, conferência do enunciado original e publicação do repositório/URL no TXT de entrega.
 
 ## Como repetir
 
